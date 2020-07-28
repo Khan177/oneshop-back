@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
-console.log();
 
 app.use(express.json());
 app.use(cors());
