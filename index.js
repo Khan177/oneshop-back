@@ -7,6 +7,7 @@ const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect(DB_KEY, {
   useNewUrlParser: true,
