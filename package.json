@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "backend side of oneshop",
   "main": "index.js",
+  "engines": {
+    "node": "13.8.0",
+    "npm":"6.13.6"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
