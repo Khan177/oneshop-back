@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const productRouter = require('./router/productRouter');
 const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
 
@@ -13,6 +14,8 @@ mongoose.connect(DB_KEY, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+app.use('/products', productRouter)
 
 app.listen(PORT, () => {
   console.log("Server is running...");
