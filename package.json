@@ -5,12 +5,12 @@
   "main": "index.js",
   "engines": {
     "node": "13.8.0",
-    "npm":"6.13.6"
+    "npm": "6.13.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start":"node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
