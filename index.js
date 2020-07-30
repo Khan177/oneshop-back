@@ -5,9 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
-const productRouter = require('./router/productRouter');
-const categoryRouter = require('./router/categoryRouter');
-const orderRouter = require('./router/orderRouter');
+const directionRouter = require('./router/directionRouter');
 
 app.use(express.json());
 app.use(cors());
@@ -17,9 +15,7 @@ mongoose.connect(DB_KEY, {
   useUnifiedTopology: true,
 });
 
-app.use('/products', productRouter);
-app.use('/categories', categoryRouter);
-app.use('/orders', orderRouter);
+app.use('/directions', directionRouter);
 
 app.listen(PORT, () => {
   console.log('Server is running...');

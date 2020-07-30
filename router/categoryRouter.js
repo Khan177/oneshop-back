@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoryModel = require('../models/category');
-const productModel = require('../models/product');
+const productModel = require('../models/direction');
 
 router
   .route('/')
@@ -50,7 +50,7 @@ router
   .delete(async (req, res) => {
     try {
       const category = await categoryModel.findByIdAndDelete(req.params.id);
-      const product = await productModel.find({ category: category._id }).updateMany({ category: 'all' });
+      //const product = await productModel.find({ category: category._id }).updateMany({ category: 'all' });
       res.send(product);
     } catch (err) {
       res.status(500).send(err);

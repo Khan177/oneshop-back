@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const productModel = require('../models/product');
-const categoryModel = require('../models/category');
+const directionModel = require('../models/direction');
 
 router
   .route('/')
@@ -10,21 +9,20 @@ router
     next();
   })
   .get(async (req, res) => {
-    const product = await productModel.find({});
+    const direction = await directionModel.find({});
     try {
-      res.send(product);
+      res.send(direction);
     } catch (err) {
       res.status(500).send(err);
     }
   })
   .post(async (req, res) => {
     try {
-      await categoryModel.find({ _id: req.body.category });
-      const product = new productModel(req.body);
-      await product.save();
-      res.send(product);
+      const direction = new directionModel(req.body);
+      await direction.save();
+      res.send(direction);
     } catch (err) {
-      res.send(404).send(err);
+      res.status(500).send(err);
     }
   });
 
@@ -36,30 +34,30 @@ router
   })
   .get(async (req, res) => {
     try {
-      const product = await productModel.findById(req.params.id);
-      if (!product) res.status(404).send('No product found');
-      res.send(product);
+      const direction = await directionModel.findById(req.params.id);
+      if (!direction) res.status(404).send('No direction found');
+      res.send(direction);
     } catch (err) {
       res.status(500).send(err);
     }
   })
   .delete(async (req, res) => {
     try {
-      const product = await productModel.findByIdAndDelete(req.params.id);
-      if (!product) res.status(404).send('No product found');
-      res.send(product);
+      const direction = await directionModel.findByIdAndDelete(req.params.id);
+      if (!direction) res.status(404).send('No direction found');
+      res.send(direction);
     } catch (err) {
       res.status(500).send(err);
     }
   })
   .put(async (req, res) => {
-    productModel.findByIdAndUpdate(
+    directionModel.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true },
       (err, docs) => {
         if (!err) res.send(docs);
-        else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+        else console.log('Error while updating a direction : ' + JSON.stringify(err, undefined, 2));
       }
     );
   });
