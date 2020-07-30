@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productModel = require('../models/product');
+const categoryModel = require('../models/category');
 
 router
   .route('/')
@@ -17,12 +18,13 @@ router
     }
   })
   .post(async (req, res) => {
-    const product = new productModel(req.body);
     try {
+      await categoryModel.find({ _id: req.body.category });
+      const product = new productModel(req.body);
       await product.save();
       res.send(product);
     } catch (err) {
-      res.status(500).send(err);
+      res.send(404).send(err);
     }
   });
 
