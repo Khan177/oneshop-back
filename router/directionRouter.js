@@ -1,11 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const directionModel = require('../models/direction');
+
+const directionModel = require("../models/direction");
 
 router
-  .route('/')
+  .route("/")
   .all((req, res, next) => {
     res.statusCode = 200;
+    res.send;
     next();
   })
   .get(async (req, res) => {
@@ -27,25 +29,25 @@ router
   });
 
 router
-  .route('/:id')
+  .route("/:id")
   .all((req, res, next) => {
     res.statusCode = 200;
     next();
   })
   .get(async (req, res) => {
     try {
-      const direction = await directionModel.findById(req.params.id);
-      if (!direction) res.status(404).send('No direction found');
-      res.send(direction);
+      const product = await productModel.findById(req.params.id);
+      if (!product) res.status(404).send("No product found");
+      res.send(product);
     } catch (err) {
       res.status(500).send(err);
     }
   })
   .delete(async (req, res) => {
     try {
-      const direction = await directionModel.findByIdAndDelete(req.params.id);
-      if (!direction) res.status(404).send('No direction found');
-      res.send(direction);
+      const product = await productModel.findByIdAndDelete(req.params.id);
+      if (!product) res.status(404).send("No product found");
+      res.send(product);
     } catch (err) {
       res.status(500).send(err);
     }
@@ -57,7 +59,11 @@ router
       { new: true },
       (err, docs) => {
         if (!err) res.send(docs);
-        else console.log('Error while updating a direction : ' + JSON.stringify(err, undefined, 2));
+        else
+          console.log(
+            "Error while updating a record : " +
+              JSON.stringify(err, undefined, 2)
+          );
       }
     );
   });
