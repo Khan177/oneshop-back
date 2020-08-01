@@ -36,18 +36,18 @@ router
   })
   .get(async (req, res) => {
     try {
-      const product = await productModel.findById(req.params.id);
-      if (!product) res.status(404).send("No product found");
-      res.send(product);
+      const direction = await directionModel.findById(req.params.id);
+      if (!direction) res.status(404).send("No direction found");
+      res.send(direction);
     } catch (err) {
       res.status(500).send(err);
     }
   })
   .delete(async (req, res) => {
     try {
-      const product = await productModel.findByIdAndDelete(req.params.id);
-      if (!product) res.status(404).send("No product found");
-      res.send(product);
+      const direction = await directionModel.findByIdAndDelete(req.params.id);
+      if (!direction) res.status(404).send("No direction found");
+      res.send(direction);
     } catch (err) {
       res.status(500).send(err);
     }
