@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
+const path = require('path');
 const directionRouter = require("./router/directionRouter");
 const qaRouter = require("./router/qaRouter");
 const usersRouter = require("./router/usersRouter");
