@@ -24,7 +24,16 @@ router.post("/signup", auth.optional, (req, res, next) => {
       },
     });
   }
-
+  User.findOne({ email: user.email }).then((result) => {
+    if (result != null) {
+      console.log(result);
+      res.status(422).json({
+        errors: {
+          email: "email is not free",
+        },
+      });
+    }
+  });
   const finalUser = new User(user);
 
   finalUser.setPassword(user.password);

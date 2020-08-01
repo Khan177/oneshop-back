@@ -9,11 +9,12 @@ const DB_KEY = process.env.DB_KEY;
 const directionRouter = require("./router/directionRouter");
 const qaRouter = require("./router/qaRouter");
 const usersRouter = require("./router/usersRouter");
+const secret = process.env.SECRET;
 
 require("./config/passport");
 
 const session = require("express-session")({
-  secret: "secret",
+  secret: secret,
   cookie: {
     path: "/",
     httpOnly: true,
