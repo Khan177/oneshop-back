@@ -17,8 +17,8 @@ router
     }
   })
   .post(async (req, res) => {
-    const qa = new qaModel(req.body);
     try {
+      const qa = new qaModel(req.body);
       await qa.save();
       res.send(qa);
     } catch (err) {
@@ -35,6 +35,7 @@ router
   .get(async (req, res) => {
     try {
       const qa = await qaModel.findById(req.params.id);
+      if (!qa) res.status(404).send("No Q&A found");
       res.send(qa);
     } catch (err) {
       res.status(500).send(err);
@@ -42,7 +43,7 @@ router
   })
   .delete(async (req, res) => {
     try {
-      const qa = await categoryModel.findByIdAndDelete(req.params.id);
+      const qa = await qaModel.findByIdAndDelete(req.params.id);
       res.send(qa);
     } catch (err) {
       res.status(500).send(err);
