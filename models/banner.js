@@ -9,6 +9,10 @@ const BannerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  buttonText: {
+    type: String,
+    required: true,
+  },
   img: {
     type: String,
     required: true,
@@ -16,7 +20,7 @@ const BannerSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const BannerModel = mongoose.model('Banner', BannerSchema);
