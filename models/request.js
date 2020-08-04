@@ -29,7 +29,7 @@ const RequestSchema = new mongoose.Schema({
     required: true,
   },
   course: {
-    type: Number,
+    type: String,
     required: true,
   },
   file: {
