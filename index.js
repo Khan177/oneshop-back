@@ -38,7 +38,7 @@ app.use(cors());
 app.use(session);
 app.use('/directions', directionRouter);
 app.use('/qa', qaRouter);
-app.use('/media-images', bannerRouter);
+app.use('/headings', bannerRouter);
 app.use('/requests', requestRouter);
 app.use('/', usersRouter);
 

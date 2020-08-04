@@ -9,9 +9,8 @@ const RequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  patronymic: {
+  fathername: {
     type: String,
-    required: true,
   },
   phone: {
     type: String,
@@ -35,8 +34,8 @@ const RequestSchema = new mongoose.Schema({
   },
   file: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const requestModel = mongoose.model('Request', RequestSchema);
