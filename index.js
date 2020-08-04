@@ -11,6 +11,7 @@ const secret = process.env.SECRET;
 const directionRouter = require('./router/directionRouter');
 const qaRouter = require('./router/qaRouter');
 const bannerRouter = require('./router/bannerRouter');
+const requestRouter = require('./router/requestRouter');
 const usersRouter = require('./router/usersRouter');
 
 require('./config/passport');
@@ -38,6 +39,7 @@ app.use(session);
 app.use('/directions', directionRouter);
 app.use('/qa', qaRouter);
 app.use('/banners', bannerRouter);
+app.use('/requests', requestRouter);
 app.use('/', usersRouter);
 
 app.listen(PORT, () => {
