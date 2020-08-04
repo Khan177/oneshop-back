@@ -48,6 +48,7 @@ router.route('/').post(upload.single('file'), async (req, res) => {
     course: req.body.course,
     file: `${req.protocol}://${req.get('host')}${req.originalUrl}file/${req.file.filename}`,
   };
+  console.log("hello");
   try {
     const request = new requestModel(obj);
     await request.save();
