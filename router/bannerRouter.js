@@ -41,7 +41,8 @@ router.route('/').post(upload.single('file'), async (req, res) => {
     res.status(500).json({
       message: 'Wrong format, only .jpeg or .png',
     });
-  } else {
+  } 
+  else {
     let obj = {
       title: req.body.title,
       description: req.body.description,
