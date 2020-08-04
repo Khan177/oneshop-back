@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/image/:filename', async (req, res) => {
+router.get('/:filename', async (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
