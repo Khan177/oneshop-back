@@ -17,6 +17,14 @@ const QASchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  answer: {
+    type: String,
+    default: '',
+  },
+  important: {
+    type: String,
+    default: false,
+  },
 });
 
 const QA = mongoose.model('QA', QASchema);
