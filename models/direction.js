@@ -9,14 +9,18 @@ const DirectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
     type: Date,
     required: true,
   },
   description: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const DirectionModel = mongoose.model('Direction', DirectionSchema);

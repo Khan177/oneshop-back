@@ -35,11 +35,22 @@ router
   .get(async (req, res) => {
     try {
       const qa = await qaModel.findById(req.params.id);
-      if (!qa) res.status(404).send("No Q&A found");
-      res.send(qa);
+      if (!qa) res.status(404).send('No Q&A found');
+      else res.send(qa);
     } catch (err) {
       res.status(500).send(err);
     }
+  })
+  .put(async (req, res) => {
+    qaModel.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true },
+      (err, docs) => {
+        if (!err) res.send(docs);
+        else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+      }
+    );
   })
   .delete(async (req, res) => {
     try {
