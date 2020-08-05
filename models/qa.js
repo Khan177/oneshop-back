@@ -17,6 +17,10 @@ const QASchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  important: {
+    type: String,
+    default: false
+  }
 });
 
 const QA = mongoose.model('QA', QASchema);
