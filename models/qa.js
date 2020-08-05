@@ -22,7 +22,7 @@ const QASchema = new mongoose.Schema({
     default: '',
   },
   important: {
-    type: String,
+    type: Boolean,
     default: false,
   },
 });
