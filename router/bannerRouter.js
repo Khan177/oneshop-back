@@ -36,40 +36,40 @@ const storage = new GridFSStorage({
 
 const upload = multer({ storage });
 
-router.route('/').post(upload.single('file'), async (req, res) => {
-  if (!(req.file.contentType === 'image/jpeg' || req.file.contentType === 'image/png')) {
-    res.status(500).json({
-      message: 'Wrong format, only .jpeg or .png',
-    });
-  } 
-  else {
-    let obj = {
-      title: req.body.title,
-      description: req.body.description,
-      buttonText: req.body.buttonText,
-      img: `${req.protocol}://${req.get('host')}${req.originalUrl}/${req.file.filename}`,
-      url: req.body.url,
-    };
+router
+  .route('/')
+  .get(async (req, res) => {
     try {
-      const banner = new bannerModel(obj);
-      await banner.save();
+      const banner = await bannerModel.find({});
       res.send(banner);
     } catch (err) {
       res.status(500).send(err);
     }
-  }
-});
+  })
+  .post(upload.single('file'), async (req, res) => {
+    if (!(req.file.contentType === 'image/jpeg' || req.file.contentType === 'image/png')) {
+      res.status(500).json({
+        message: 'Wrong format, only .jpeg or .png',
+      });
+    } else {
+      let obj = {
+        title: req.body.title,
+        description: req.body.description,
+        buttonText: req.body.buttonText,
+        img: `${req.protocol}://${req.get('host')}${req.originalUrl}/${req.file.filename}`,
+        url: req.body.url,
+      };
+      try {
+        const banner = new bannerModel(obj);
+        await banner.save();
+        res.send(banner);
+      } catch (err) {
+        res.status(500).send(err);
+      }
+    }
+  });
 
-router.get('/', async (req, res) => {
-  try {
-    const banner = await bannerModel.find({});
-    res.send(banner);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-router.get('/:filename', async (req, res) => {
+router.route('/:filename').get(async (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
@@ -81,16 +81,29 @@ router.get('/:filename', async (req, res) => {
   });
 });
 
-router.delete('/:id', async (req, res) => {
-  const banner = await bannerModel.findByIdAndDelete(req.params.id);
-  if (!banner) res.status(404).send('No banner found');
-  let filename = banner.img.split('/');
-  gfs.remove({ filename: filename[filename.length - 1], root: 'banners' }, (err, GridFSBucket) => {
-    if (err) {
-      return res.status(404).json({ err: err });
+router
+  .route('/:id')
+  .put(async (req, res) => {
+    bannerModel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, (err, docs) => {
+      if (!err) res.send(docs);
+      else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+    });
+  })
+  .delete(async (req, res) => {
+    const banner = await bannerModel.findByIdAndDelete(req.params.id);
+    if (!banner) res.status(404).send('No banner found');
+    else {
+      let filename = banner.img.split('/');
+      gfs.remove(
+        { filename: filename[filename.length - 1], root: 'banners' },
+        (err, GridFSBucket) => {
+          if (err) {
+            return res.status(404).json({ err: err });
+          }
+        }
+      );
+      res.send(banner);
     }
   });
-  res.send(banner);
-});
 
 module.exports = router;
