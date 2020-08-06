@@ -1,27 +1,21 @@
-require('dotenv').config();
-require('./models/user');
-const express = require('express');
+require("dotenv").config();
+require("./models/user");
+const express = require("express");
 const app = express();
-const mongoose = require('mongoose');
-const cors = require('cors');
+const mongoose = require("mongoose");
+const cors = require("cors");
 const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
-<<<<<<< Updated upstream
-=======
 const path = require("path");
-const directionRouter = require("./router/directionRouter");
-const qaRouter = require("./router/qaRouter");
-const usersRouter = require("./router/usersRouter");
->>>>>>> Stashed changes
 const secret = process.env.SECRET;
 
-const directionRouter = require('./router/directionRouter');
-const qaRouter = require('./router/qaRouter');
-const bannerRouter = require('./router/bannerRouter');
-const requestRouter = require('./router/requestRouter');
-const usersRouter = require('./router/usersRouter');
+const directionRouter = require("./router/directionRouter");
+const qaRouter = require("./router/qaRouter");
+const bannerRouter = require("./router/bannerRouter");
+const requestRouter = require("./router/requestRouter");
+const usersRouter = require("./router/usersRouter");
 
-require('./config/passport');
+require("./config/passport");
 
 mongoose.connect(DB_KEY, {
   useUnifiedTopology: true,
@@ -29,10 +23,10 @@ mongoose.connect(DB_KEY, {
   useCreateIndex: true,
 });
 
-const session = require('express-session')({
+const session = require("express-session")({
   secret: secret,
   cookie: {
-    path: '/',
+    path: "/",
     httpOnly: true,
     maxAge: 60 * 60 * 1000,
   },
@@ -40,38 +34,19 @@ const session = require('express-session')({
   saveUninitialized: false,
 });
 
-<<<<<<< Updated upstream
 app.use(express.json());
 app.use(cors());
 app.use(session);
-app.use('/directions', directionRouter);
-app.use('/qa', qaRouter);
-app.use('/media-images', bannerRouter);
-app.use('/requests', requestRouter);
-app.use('/', usersRouter);
-=======
+app.use("/directions", directionRouter);
+app.use("/qa", qaRouter);
+app.use("/media-images", bannerRouter);
+app.use("/requests", requestRouter);
+app.use("/", usersRouter);
 const GridFSStorage = require("multer-gridfs-storage");
 const GridFS = require("gridfs-stream");
 const multer = require("multer");
 const crypto = require("crypto");
 var gfs;
-
-app.use(express.json());
-app.use(cors());
-app.use(session);
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  next();
-});
-
-app.use("/directions", directionRouter);
-app.use("/qa", qaRouter);
-app.use("/", usersRouter);
 
 mongoose
   .connect(DB_KEY, {
@@ -175,8 +150,7 @@ app.delete("/files/:filename", (req, res) => {
     }
   );
 });
->>>>>>> Stashed changes
 
 app.listen(PORT, () => {
-  console.log('Server is running...');
+  console.log("Server is running...");
 });
