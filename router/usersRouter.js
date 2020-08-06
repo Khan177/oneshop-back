@@ -75,12 +75,12 @@ router.post("/signin", auth.optional, (req, res, next) => {
       if (passportUser) {
         const user = passportUser;
         user.token = passportUser.generateJWT();
-        res.cookie("token", user.token);
+        res.cookie("token", user.token, { httpOnly: true });
 
         return res.json({ user: user.toAuthJSON() });
       }
 
-      return status(400).info;
+      return res.status(422).json("Wrong username or password");
     }
   )(req, res, next);
 });
