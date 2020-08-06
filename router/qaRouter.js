@@ -41,16 +41,15 @@ router
       res.status(500).send(err);
     }
   })
-  .put(async (req, res) => {
-    qaModel.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true },
-      (err, docs) => {
-        if (!err) res.send(docs);
-        else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
-      }
-    );
+  .patch(async (req, res) => {
+    const updateObj = {};
+    for (const ops of req.body) {
+      updateObj[ops.prop] = ops.value;
+    }
+    qaModel.findByIdAndUpdate(req.params.id, { $set: updateObj }, { new: true }, (err, docs) => {
+      if (!err) res.send(docs);
+      else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+    });
   })
   .delete(async (req, res) => {
     try {
