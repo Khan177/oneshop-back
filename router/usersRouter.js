@@ -72,6 +72,7 @@ router.post("/signin", auth.optional, (req, res, next) => {
 
       if (passportUser) {
         const user = passportUser;
+        console.log(user);
         user.token = passportUser.generateJWT();
         res.cookie("token", user.token);
 
