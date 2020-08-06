@@ -82,12 +82,15 @@ router.route('/:filename').get(async (req, res) => {
 });
 
 router
-  .route('/:id')
-  .put(async (req, res) => {
-    bannerModel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, (err, docs) => {
-      if (!err) res.send(docs);
-      else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
-    });
+  .route('/details/:id')
+  .get(async (req, res) => {
+    try {
+      const banner = await bannerModel.findById(req.params.id);
+      if (!banner) res.status(404).send('No banner found');
+      else res.send(banner);
+    } catch (err) {
+      res.status(500).send(err);
+    }
   })
   .delete(async (req, res) => {
     const banner = await bannerModel.findByIdAndDelete(req.params.id);
@@ -105,5 +108,53 @@ router
       res.send(banner);
     }
   });
+
+router.route('/:id').put(upload.single('file'), async (req, res) => {
+  let obj;
+  if (!req.file) {
+    let { img } = await bannerModel.findById(req.params.id).select('img');
+    obj = {
+      title: req.body.title,
+      description: req.body.description,
+      buttonText: req.body.buttonText,
+      img,
+      url: req.body.url,
+    };
+    bannerModel.findByIdAndUpdate(req.params.id, { $set: obj }, { new: true }, (err, docs) => {
+      if (err) console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+      else res.send(docs);
+    });
+  } else {
+    const banner = await bannerModel.findById(req.params.id);
+    let filename = banner.img.split('/');
+    gfs.remove(
+      { filename: filename[filename.length - 1], root: 'banners' },
+      (err, GridFSBucket) => {
+        if (err) {
+          return res.status(404).json({ err: err });
+        }
+      }
+    );
+    obj = {
+      title: req.body.title,
+      description: req.body.description,
+      buttonText: req.body.buttonText,
+      img: `${req.protocol}://${req.get('host')}/${req.originalUrl.split('/')[1]}/${
+        req.file.filename
+      }`,
+      url: req.body.url,
+    };
+    await bannerModel.findByIdAndUpdate(
+      req.params.id,
+      { $set: obj },
+      { new: true },
+      (err, docs) => {
+        if (err)
+          console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+        else res.send(docs);
+      }
+    );
+  }
+});
 
 module.exports = router;
