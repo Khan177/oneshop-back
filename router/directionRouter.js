@@ -46,7 +46,9 @@ router
     try {
       const direction = await directionModel.findByIdAndDelete(req.params.id);
       if (!direction) res.status(404).send('No direction found');
-      res.send(direction);
+      res.status(200).send({
+        message: 'Успешно удалено!'
+      });
     } catch (err) {
       res.status(500).send(err);
     }

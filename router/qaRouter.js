@@ -54,7 +54,10 @@ router
   .delete(async (req, res) => {
     try {
       const qa = await qaModel.findByIdAndDelete(req.params.id);
-      res.send(qa);
+      if (!qa) res.status(404).send('No question found');
+      res.status(200).send({
+        message: 'Успешно удалено!'
+      });
     } catch (err) {
       res.status(500).send(err);
     }

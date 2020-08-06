@@ -102,7 +102,9 @@ router
         }
       }
     );
-    res.send(request);
+    res.status(200).send({
+      message: 'Успешно удалено!'
+    });
   });
 
 module.exports = router;

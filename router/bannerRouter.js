@@ -153,7 +153,9 @@ router
           }
         }
       );
-      res.send(banner);
+      res.status(200).send({
+        message: 'Успешно удалено!'
+      });
     }
   });
 
