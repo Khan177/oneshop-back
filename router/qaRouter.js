@@ -13,7 +13,7 @@ router
     try {
       res.send(qa);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   })
   .post(async (req, res) => {
@@ -22,7 +22,7 @@ router
       await qa.save();
       res.send(qa);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   });
 
@@ -35,7 +35,7 @@ router
   .get(async (req, res) => {
     try {
       const qa = await qaModel.findById(req.params.id);
-      if (!qa) res.status(404).send('No Q&A found');
+      if (!qa) res.status(404).send('Вопрос не найден!');
       else res.send(qa);
     } catch (err) {
       res.status(500).send(err);
@@ -48,18 +48,21 @@ router
     }
     qaModel.findByIdAndUpdate(req.params.id, { $set: updateObj }, { new: true }, (err, docs) => {
       if (!err) res.send(docs);
-      else console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+      else
+        res
+          .status(500)
+          .json({ message: 'Ошибка при обновлении: ' + JSON.stringify(err, undefined, 2) });
     });
   })
   .delete(async (req, res) => {
     try {
       const qa = await qaModel.findByIdAndDelete(req.params.id);
-      if (!qa) res.status(404).send('No question found');
+      if (!qa) res.status(404).send('Вопрос не найден!');
       res.status(200).send({
-        message: 'Успешно удалено!'
+        message: 'Вопрос успешно удален!',
       });
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   });
 

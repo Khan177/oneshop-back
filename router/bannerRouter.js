@@ -43,13 +43,17 @@ router
       const banner = await bannerModel.find({});
       res.send(banner);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   })
   .post(upload.single('file'), async (req, res) => {
-    if (!(req.file.contentType === 'image/jpeg' || req.file.contentType === 'image/png')) {
+    if (!req.file || Object.keys(req.body).length === 0) {
       res.status(500).json({
-        message: 'Wrong format, only .jpeg or .png',
+        message: 'Не все поля заполнены!',
+      });
+    } else if (!(req.file.contentType === 'image/jpeg' || req.file.contentType === 'image/png')) {
+      res.status(500).json({
+        message: 'Неверный формат. Только файлы формата .jpeg, .png!',
       });
     } else {
       let obj = {
@@ -62,9 +66,9 @@ router
       try {
         const banner = new bannerModel(obj);
         await banner.save();
-        res.send(banner);
+        res.json({ message: 'Баннер успешно добавлен!' });
       } catch (err) {
-        res.status(500).send(err);
+        res.status(500).json({ message: err.message });
       }
     }
   });
@@ -73,7 +77,7 @@ router.route('/:filename').get(async (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists',
+        message: 'Файла не существует',
       });
     }
     const readstream = gfs.createReadStream(file.filename);
@@ -86,10 +90,10 @@ router
   .get(async (req, res) => {
     try {
       const banner = await bannerModel.findById(req.params.id);
-      if (!banner) res.status(404).send('No banner found');
+      if (!banner) res.status(404).send('Баннер не найден');
       else res.send(banner);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   })
   .put(upload.single('file'), async (req, res) => {
@@ -105,7 +109,9 @@ router
       };
       bannerModel.findByIdAndUpdate(req.params.id, { $set: obj }, { new: true }, (err, docs) => {
         if (err)
-          console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+          res
+            .status(500)
+            .json({ message: 'Ошибка при обновлении: ' + JSON.stringify(err, undefined, 2) });
         else res.send(docs);
       });
     } else {
@@ -115,7 +121,7 @@ router
         { filename: filename[filename.length - 1], root: 'banners' },
         (err, GridFSBucket) => {
           if (err) {
-            return res.status(404).json({ err: err });
+            return res.status(404).json({ err: err.message });
           }
         }
       );
@@ -134,7 +140,9 @@ router
         { new: true },
         (err, docs) => {
           if (err)
-            console.log('Error while updating a record : ' + JSON.stringify(err, undefined, 2));
+            res
+              .status(500)
+              .json({ message: 'Ошибка при обновлении: ' + JSON.stringify(err, undefined, 2) });
           else res.send(docs);
         }
       );
@@ -149,12 +157,12 @@ router
         { filename: filename[filename.length - 1], root: 'banners' },
         (err, GridFSBucket) => {
           if (err) {
-            return res.status(404).json({ err: err });
+            return res.status(404).json({ message: err.message });
           }
         }
       );
       res.status(200).send({
-        message: 'Успешно удалено!'
+        message: 'Успешно удалено!',
       });
     }
   });

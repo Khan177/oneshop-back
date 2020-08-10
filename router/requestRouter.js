@@ -43,10 +43,15 @@ router
       const request = await requestModel.find({});
       res.send(request);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   })
   .post(upload.single('file'), async (req, res) => {
+    if (!req.file || Object.keys(req.body).length === 0) {
+      res.status(500).json({
+        message: 'Не все поля заполнены!',
+      });
+    }
     let obj = {
       name: req.body.name,
       surname: req.body.surname,
@@ -71,7 +76,7 @@ router.route('/file/:filename').get(async (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists',
+        err: 'Файл не найден!',
       });
     }
     const readstream = gfs.createReadStream(file.filename);
@@ -84,15 +89,15 @@ router
   .get(async (req, res) => {
     try {
       const request = await requestModel.findById(req.params.id);
-      if (!request) res.status(404).send('No request found');
+      if (!request) res.status(404).send('Заявка не найдена!');
       else res.send(request);
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).json({ message: err.message });
     }
   })
   .delete(async (req, res) => {
     const request = await requestModel.findByIdAndDelete(req.params.id);
-    if (!request) res.status(404).send('No request found');
+    if (!request) res.status(404).send('Заявка не найдена!');
     let filename = request.file.split('/');
     gfs.remove(
       { filename: filename[filename.length - 1], root: 'requests' },
@@ -103,7 +108,7 @@ router
       }
     );
     res.status(200).send({
-      message: 'Успешно удалено!'
+      message: 'Заявка успешно удалена!',
     });
   });
 
