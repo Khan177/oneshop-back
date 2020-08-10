@@ -80,7 +80,7 @@ router.post("/signin", auth.optional, (req, res, next) => {
         return res.json({ user: user.toAuthJSON() });
       }
 
-      return res.status(500).json("Wrong username or password");
+      return res.status(500).send("Wrong username or password");
     }
   )(req, res, next);
 });
