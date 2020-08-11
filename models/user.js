@@ -19,11 +19,12 @@ UsersSchema.methods.setPassword = (password) => {
   return { salt: this.salt, hash: this.hash };
 };
 
-UsersSchema.methods.validatePassword = (password, salt) => {
-  const hash = crypto
+UsersSchema.methods.validatePassword = (password, salt, hash) => {
+  const newHash = crypto
     .pbkdf2Sync(password, salt, 10000, 512, "sha512")
     .toString("hex");
-  return this.hash === hash;
+  console.log(newHash, hash);
+  return newHash === hash;
 };
 
 UsersSchema.methods.generateJWT = function() {
