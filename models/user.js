@@ -19,9 +19,9 @@ UsersSchema.methods.setPassword = (password) => {
   return { salt: this.salt, hash: this.hash };
 };
 
-UsersSchema.methods.validatePassword = (password) => {
+UsersSchema.methods.validatePassword = (password, salt) => {
   const hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
+    .pbkdf2Sync(password, salt, 10000, 512, "sha512")
     .toString("hex");
   return this.hash === hash;
 };
