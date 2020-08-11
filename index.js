@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const DB_KEY = process.env.DB_KEY;
 const path = require("path");
 const secret = process.env.SECRET;
-
+console.log(PORT);
 const directionRouter = require("./router/directionRouter");
 const qaRouter = require("./router/qaRouter");
 const bannerRouter = require("./router/bannerRouter");
