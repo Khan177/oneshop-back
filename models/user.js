@@ -7,8 +7,8 @@ const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
   email: { type: String, unique: true },
-  hash: String,
-  salt: String,
+  hash: { type: String },
+  salt: { type: String },
 });
 
 UsersSchema.methods.setPassword = (password) => {
@@ -16,6 +16,7 @@ UsersSchema.methods.setPassword = (password) => {
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
     .toString("hex");
+  return { salt: this.salt, hash: this.hash };
 };
 
 UsersSchema.methods.validatePassword = (password) => {

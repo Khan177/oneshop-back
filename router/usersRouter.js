@@ -33,9 +33,10 @@ router.post("/signup", auth.optional, (req, res, next) => {
       });
     }
   });
-  const finalUser = new User(user);
-
-  finalUser.setPassword(user.password);
+  let finalUser = new User(user);
+  let { salt, hash } = finalUser.setPassword(user.password);
+  let email = user.email;
+  finalUser = new User({ email, salt, hash });
   console.log(finalUser);
   return finalUser
     .save()
