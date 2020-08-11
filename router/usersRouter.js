@@ -36,6 +36,7 @@ router.post("/signup", auth.optional, (req, res, next) => {
   const finalUser = new User(user);
 
   finalUser.setPassword(user.password);
+  console.log(user);
   return finalUser
     .save()
     .then(() => res.json({ user: User(finalUser).toAuthJSON() }));
