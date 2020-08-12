@@ -13,7 +13,8 @@ passport.use(
     (email, password, done) => {
       User.findOne({ email })
         .then((user) => {
-          if (!user || !user.validatePassword(password)) {
+          console.log(user);
+          if (!user || !user.validatePassword(password, user.salt, user.hash)) {
             return done(null, false, {
               errors: { "email or password": "is invalid" },
             });

@@ -33,9 +33,11 @@ router.post("/signup", auth.optional, (req, res, next) => {
       });
     }
   });
-  const finalUser = new User(user);
-
-  finalUser.setPassword(user.password);
+  let finalUser = new User(user);
+  let { salt, hash } = finalUser.setPassword(user.password);
+  let email = user.email;
+  finalUser = new User({ email, salt, hash });
+  console.log(finalUser);
   return finalUser
     .save()
     .then(() => res.json({ user: User(finalUser).toAuthJSON() }));
@@ -80,7 +82,7 @@ router.post("/signin", auth.optional, (req, res, next) => {
         return res.json({ user: user.toAuthJSON() });
       }
 
-      return res.status(500).send("Wrong username or password");
+      return res.status(500).json({ message: "Wrong username or password" });
     }
   )(req, res, next);
 });
