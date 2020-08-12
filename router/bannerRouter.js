@@ -60,7 +60,7 @@ router
         title: req.body.title,
         description: req.body.description,
         buttonText: req.body.buttonText,
-        img: `${req.protocol}://${req.get('host')}${req.originalUrl}/${req.file.filename}`,
+        img: `${req.protocol}://${req.get('host')}${req.originalUrl}${req.file.filename}`,
         url: req.body.url,
       };
       try {
