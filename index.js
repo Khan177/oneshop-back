@@ -1,11 +1,10 @@
-console.log(process.env.PORT);
 require("dotenv").config();
 require("./models/user");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const DB_KEY = process.env.DB_KEY;
 const path = require("path");
 const secret = process.env.SECRET;
@@ -152,5 +151,5 @@ app.delete("/files/:filename", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server is running...");
+  console.log("Server is running...",PORT);
 });

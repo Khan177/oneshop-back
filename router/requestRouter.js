@@ -47,7 +47,9 @@ router
     }
   })
   .post(upload.single('file'), async (req, res) => {
+    console.log("privet");
     if (!req.file || Object.keys(req.body).length === 0) {
+      console.log(req.file);
       res.status(500).json({
         message: 'Не все поля заполнены!',
       });
