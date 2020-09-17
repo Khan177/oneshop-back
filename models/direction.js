@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const DirectionSchema = new mongoose.Schema({
   title: {
@@ -10,14 +10,14 @@ const DirectionSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   description: {
     type: String,
     required: true,
-  }
+  },
 });
 
-const DirectionModel = mongoose.model('Direction', DirectionSchema);
+const DirectionModel = mongoose.model("Direction", DirectionSchema);
 module.exports = DirectionModel;
